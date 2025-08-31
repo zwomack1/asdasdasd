@@ -1,0 +1,54 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20250830062019
+Username: SHADOW-18UUKR3G\Shadow
+RunAs User: SHADOW-18UUKR3G\Shadow
+Configuration Name: 
+Machine: SHADOW-18UUKR3G (Microsoft Windows NT 10.0.26100.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -File Test-OpenRouter.ps1
+Process ID: 24772
+PSVersion: 5.1.26100.4061
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.4061
+BuildVersion: 10.0.26100.4061
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\Shadow\CascadeProjects\windsurf-project\openrouter_test_20250830_062019.log
+=== OpenRouter Integration Test ===
+Timestamp: 2025-08-30 06:20:19
+Current directory: C:\Users\Shadow\CascadeProjects\windsurf-project
+
+[06:20:19] [INFO]
+ Checking Python installation...
+[06:20:19] [SUCCESS]
+ Python version: Python 3.13.6
+[06:20:19] [INFO]
+ Checking Python module: requests
+[06:20:20] [SUCCESS]
+ Module requests is installed
+[06:20:20] [INFO]
+ Checking Python module: json
+[06:20:20] [SUCCESS]
+ Module json is installed
+[06:20:20] [INFO]
+ Testing internet connectivity...
+[06:20:20] [SUCCESS]
+ Internet connection is working (Status: 200)
+[06:20:20] [INFO]
+ Testing OpenRouter API...
+[06:20:20] [INFO]
+ Testing authentication...
+PS>TerminatingError(Invoke-RestMethod): "The remote server returned an error: (401) Unauthorized."
+[06:20:21] [ERROR]
+ âŒ OpenRouter authentication failed (Status: 401 Unauthorized)
+Response: {"error":{"message":"User not found.","code":401}}
+[06:20:21] [ERROR]
+ TEST FAILED: Authentication failed
+Error details: at <ScriptBlock>, C:\Users\Shadow\CascadeProjects\windsurf-project\Test-OpenRouter.ps1: line 90
+**********************
+Windows PowerShell transcript end
+End time: 20250830062021
+**********************

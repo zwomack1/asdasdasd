@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenRouter API Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .output {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 100px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+        }
+        .error {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        .success {
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>OpenRouter API Test</h1>
+    <div class="container">
+        <h2>Test Connection</h2>
+        <p>Click the button below to test the OpenRouter API connection.</p>
+        <button id="testBtn" class="btn">Test OpenRouter API</button>
+        
+        <h3>Output:</h3>
+        <div id="output" class="output">Click the button to run tests...</div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const testBtn = document.getElementById('testBtn');
+        
+        // API key - in a real app, this should be handled server-side
+        const API_KEY = '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';
+        
+        // Helper function to log messages
+        function log(message, isError = false) {
+            const timestamp = new Date().toLocaleTimeString();
+            const messageDiv = document.createElement('div');
+            messageDiv.innerHTML = `<span class="${isError ? 'error' : ''}">[${timestamp}] ${message}</span>`;
+            output.prepend(messageDiv);
+            console.log(`[${timestamp}] ${message}`);
+        }
+        
+        // Test OpenRouter API
+        async function testOpenRouter() {
+            output.innerHTML = '';
+            log('Starting OpenRouter API test...');
+            
+            try {
+                // Test 1: Check authentication
+                log('Testing authentication...');
+                const authResponse = await fetch('https://openrouter.ai/api/v1/auth/key', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!authResponse.ok) {
+                    const error = await authResponse.json();
+                    throw new Error(`Authentication failed: ${JSON.stringify(error)}`);
+                }
+                
+                const authData = await authResponse.json();
+                log('✅ Authentication successful!', false);
+                log(`Plan: ${authData.plan?.type || 'Unknown'} (${authData.usage?.total_requests || 0} requests used)`);
+                
+                // Test 2: Send a chat message
+                log('\nTesting chat completion...');
+                const chatResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${API_KEY}`,
+                        'Content-Type': 'application/json',
+                        'HTTP-Referer': window.location.href,
+                        'X-Title': 'OpenRouter Test Page'
+                    },
+                    body: JSON.stringify({
+                        model: 'kimi',
+                        messages: [
+                            { role: 'user', content: 'Hello, how are you?' }
+                        ]
+                    })
+                });
+                
+                if (!chatResponse.ok) {
+                    const error = await chatResponse.json();
+                    throw new Error(`Chat request failed: ${JSON.stringify(error)}`);
+                }
+                
+                const chatData = await chatResponse.json();
+                log('✅ Chat test successful!', false);
+                log('🤖 Response: ' + chatData.choices[0].message.content);
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, true);
+                console.error('Test failed:', error);
+            }
+        }
+        
+        // Add click event listener
+        testBtn.addEventListener('click', testOpenRouter);
+    </script>
+</body>
+</html>

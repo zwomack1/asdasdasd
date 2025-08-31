@@ -1,0 +1,9 @@
+2025-08-30 20:44:39,920 - INFO - === API Key Validation ===
+2025-08-30 20:44:40,516 - INFO - Status Code: 401
+2025-08-30 20:44:40,516 - INFO - Response: {"error":{"message":"User not found.","code":401}}
+2025-08-30 20:44:40,516 - INFO - 
+=== Chat Completion Test ===
+2025-08-30 20:44:41,133 - INFO - Status Code: 401
+2025-08-30 20:44:41,133 - INFO - Response: {"error":{"message":"User not found.","code":401}}
+2025-08-30 20:44:41,133 - INFO - 
+Test completed
